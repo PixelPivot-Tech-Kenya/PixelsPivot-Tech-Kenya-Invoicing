@@ -136,7 +136,8 @@ export default function InvoiceForm({
           ))}
         </div>
 
-        <Button onClick={addLineItem} variant="outline" className="mt-4 gap-2">
+        {/* <Button onClick={addLineItem} variant="outline" className="mt-4 gap-2"> */}
+        <Button onClick={addLineItem} className="mt-4 gap-2">
           <Plus className="w-4 h-4" /> Add Item
         </Button>
 
@@ -170,7 +171,8 @@ export default function InvoiceForm({
       </div>
 
       {/* Action */}
-      <Button onClick={onPreview} disabled={!isValid} size="lg" className="w-full gap-2 text-base font-display">
+      {/* <Button onClick={onPreview} disabled={!isValid} size="lg" className="w-full gap-2 text-base font-display"> */}
+      <Button onClick={onPreview} disabled={!isValid} className="w-full gap-2 text-base font-display">
         <Eye className="w-5 h-5" /> Preview Invoice
       </Button>
     </div>

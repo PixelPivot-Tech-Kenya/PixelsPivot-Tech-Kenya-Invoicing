@@ -27,11 +27,14 @@ export default function InvoicePreview({ invoice, subtotal, tax, total, onBack, 
     <div className="space-y-4">
       {/* Actions bar */}
       <div className="flex gap-3 no-print">
-        <Button variant="outline" onClick={onBack} className="gap-2">
+        {/* <Button variant="outline" onClick={onBack} className="gap-2"> */}
+        <Button onClick={onBack} className="gap-2 border">
           <ArrowLeft className="w-4 h-4" /> Edit
         </Button>
         <div className="flex-1" />
-        <Button variant="outline" onClick={handlePrint} className="gap-2">
+
+        {/* <Button variant="outline" onClick={handlePrint} className="gap-2"> */}
+        <Button onClick={handlePrint} className="gap-2 border">
           <Printer className="w-4 h-4" /> Print
         </Button>
         <Button onClick={handleSend} className="gap-2">
@@ -143,7 +146,8 @@ export default function InvoicePreview({ invoice, subtotal, tax, total, onBack, 
 
       {/* New Invoice */}
       <div className="text-center no-print">
-        <Button variant="outline" onClick={onReset} className="mt-2">
+        {/* <Button variant="outline" onClick={onReset} className="mt-2"> */}
+        <Button onClick={onReset} className="mt-2 border">
           Create New Invoice
         </Button>
       </div>
