@@ -18,8 +18,40 @@ export default function InvoicePreview({ invoice, subtotal, tax, total, onBack, 
   const handlePrint = () => window.print();
 
   const handleSend = () => {
-    toast.success(`Invoice ${invoice.invoiceNumber} ready to send to ${invoice.clientEmail}`, {
-      description: "Your invoice was send successfully.",
+    const itemLines = invoice.lineItems
+      .filter((item) => item.description)
+      .map((item, idx) =>
+        `${idx + 1}. ${item.description} — Qty: ${item.quantity} x KES ${item.amount.toLocaleString("en-KE", { minimumFractionDigits: 2 })} = KES ${(item.quantity * item.amount).toLocaleString("en-KE", { minimumFractionDigits: 2 })}`
+      )
+      .join("\n");
+
+    const body = [
+      `Dear ${invoice.clientName},`,
+      ``,
+      `Please find below your invoice details from ${COMPANY.name}.`,
+      ``,
+      `Invoice Number: ${invoice.invoiceNumber}`,
+      `Date: ${new Date(invoice.date).toLocaleDateString("en-KE", { dateStyle: "long" })}`,
+      `Due Date: ${new Date(invoice.dueDate).toLocaleDateString("en-KE", { dateStyle: "long" })}`,
+      ``,
+      `--- Items ---`,
+      itemLines,
+      ``,
+      `Subtotal: KES ${subtotal.toLocaleString("en-KE", { minimumFractionDigits: 2 })}`,
+      `VAT (16%): KES ${tax.toLocaleString("en-KE", { minimumFractionDigits: 2 })}`,
+      `Total Due: KES ${total.toLocaleString("en-KE", { minimumFractionDigits: 2 })}`,
+      ``,
+      invoice.notes ? `Notes: ${invoice.notes}\n` : "",
+      `Thank you for choosing ${COMPANY.name}.`,
+      `${COMPANY.email} | ${COMPANY.location}`,
+    ].join("\n");
+
+    const mailtoLink = `mailto:${encodeURIComponent(invoice.clientEmail)}?subject=${encodeURIComponent(`Invoice ${invoice.invoiceNumber} from ${COMPANY.name}`)}&body=${encodeURIComponent(body)}`;
+
+    window.location.href = mailtoLink;
+
+    toast.success(`Opening email to ${invoice.clientEmail}`, {
+      description: `Invoice ${invoice.invoiceNumber} is ready to send.`,
     });
   };
 
