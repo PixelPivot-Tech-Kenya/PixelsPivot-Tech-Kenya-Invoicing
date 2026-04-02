@@ -1,7 +1,13 @@
 import { useState, useCallback } from "react";
 import type { InvoiceData, LineItem } from "@/types/invoice";
 
-const generateInvoiceNumber = (): string => {
+const currentInvoiceNumber = (): string => {
+  const stored = localStorage.getItem("pix-invoice-counter");
+  const counter = stored ? parseInt(stored, 10) : 1;
+  return `PIX-${counter.toString().padStart(4, "0")}`;
+};
+
+const nextInvoiceNumber = (): string => {
   const stored = localStorage.getItem("pix-invoice-counter");
   const counter = stored ? parseInt(stored, 10) + 1 : 1;
   localStorage.setItem("pix-invoice-counter", counter.toString());
@@ -24,7 +30,7 @@ const emptyItem = (): LineItem => ({
 
 export function useInvoice() {
   const [invoice, setInvoice] = useState<InvoiceData>({
-    invoiceNumber: generateInvoiceNumber(),
+    invoiceNumber: currentInvoiceNumber(),
     date: today(),
     dueDate: in30Days(),
     clientName: "",
@@ -68,7 +74,7 @@ export function useInvoice() {
 
   const resetInvoice = useCallback(() => {
     setInvoice({
-      invoiceNumber: generateInvoiceNumber(),
+      invoiceNumber: nextInvoiceNumber(),
       date: today(),
       dueDate: in30Days(),
       clientName: "",
